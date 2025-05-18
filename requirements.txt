@@ -1,6 +1,6 @@
 streamlit
-rdkit-pypi
-py3Dmol
+rdkit==2023.09.2
+py3Dmol==2.0.4
 scikit-learn
 joblib
 numpy
