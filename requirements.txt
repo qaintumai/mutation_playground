@@ -1,0 +1,11 @@
+streamlit
+rdkit-pypi
+py3Dmol
+scikit-learn
+joblib
+numpy
+pandas
+graphviz
+Pillow
+requests
+fpdf2
