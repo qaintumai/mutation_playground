@@ -23,14 +23,6 @@ from .predict import (
 # Import core chem utilities
 from .chem_utils import canonicalize_smiles
 
-# Conditional import: draw_molecule_with_labels
-try:
-    from .chem_utils import draw_molecule_with_labels
-    _DRAW_AVAILABLE = True
-except ImportError:
-    draw_molecule_with_labels = None
-    _DRAW_AVAILABLE = False
-
 # Import PDF report generator
 try:
     from .pdf_utils import generate_pdf_report
@@ -73,18 +65,12 @@ __all__ = [
     'predict_toxicity',
     'check_lipinski',
     'interpret_binding_affinity'
-]
 
-# Add optional modules only if available
-if _DRAW_AVAILABLE:
-    __all__.append('draw_molecule_with_labels')
-
-__all__.extend([
     'canonicalize_smiles',  # Always available
     'calculate_sas',        # Fallback or real
     'get_swissadmet_data',  # SwissADMET support
     'parse_swissadmet'
-])
+]
 
 if _PDF_AVAILABLE:
     __all__.append('generate_pdf_report')
