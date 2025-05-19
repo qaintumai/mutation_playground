@@ -19,7 +19,6 @@ from utils import (
     predict_toxicity,
     interpret_binding_affinity,
     check_lipinski,
-    draw_molecule_with_labels,
     canonicalize_smiles,
     calculate_sas,
     generate_pdf_report
@@ -44,19 +43,6 @@ smiles_input = canonicalize_smiles(raw_smiles)
 
 if not smiles_input:
     st.stop()
-
-# Show Base Molecule
-st.subheader("🔬 Base Molecule")
-
-# Display Labeled Molecule
-mol_img = draw_molecule_with_labels(smiles_input)
-
-if mol_img is not None:
-    st.image(mol_img, width=400)  # Small fixed width
-    st.markdown(f"**SMILES:** `{smiles_input}`")
-else:
-    st.markdown(f"**SMILES:** `{smiles_input}`")
-    st.info("⚠️ Molecule image not available in this environment.")
 
 # Get possible mutations
 possible_mutations, reasons = get_possible_mutations(smiles_input)
