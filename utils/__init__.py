@@ -12,7 +12,7 @@ from .mutations import (
     get_possible_mutations
 )
 
-# Import prediction functions from predict.py
+# Import prediction functions
 from .predict import (
     predict_binding_affinity,
     predict_toxicity,
@@ -20,20 +20,43 @@ from .predict import (
     interpret_binding_affinity
 )
 
-# Import chem utils functions from chem_utils.py
-from .chem_utils import (
-    draw_molecule_with_labels,
-    canonicalize_smiles,
-)
+# Import core chem utilities
+from .chem_utils import canonicalize_smiles
 
-from .pdf_utils import generate_pdf_report
+# Conditional import: draw_molecule_with_labels
+try:
+    from .chem_utils import draw_molecule_with_labels
+    _DRAW_AVAILABLE = True
+except ImportError:
+    draw_molecule_with_labels = None
+    _DRAW_AVAILABLE = False
 
-from .sas import calculate_sas
+# Import PDF report generator
+try:
+    from .pdf_utils import generate_pdf_report
+    _PDF_AVAILABLE = True
+except ImportError:
+    generate_pdf_report = None
+    _PDF_AVAILABLE = False
 
-# Import the function to get SwissADEMT from admet.py
-from .admet import get_swissadmet_data, parse_swissadmet
+# Import SAS calculator
+try:
+    from .sas import calculate_sas
+    _SAS_AVAILABLE = True
+except ImportError:
+    calculate_sas = None
+    _SAS_AVAILABLE = False
 
-# Optional: Expose __all__ for clarity
+# Import ADMEt data fetcher
+try:
+    from .admet import get_swissadmet_data, parse_swissadmet
+    _ADMET_AVAILABLE = True
+except ImportError:
+    get_swissadmet_data = None
+    parse_swissadmet = None
+    _ADMET_AVAILABLE = False
+
+# --- Optional: Expose __all__ dynamically ---
 __all__ = [
     # Mutation functions
     'apply_smarts_reaction',
@@ -49,15 +72,19 @@ __all__ = [
     'predict_binding_affinity',
     'predict_toxicity',
     'check_lipinski',
-    'interpret_binding_affinity',
-
-    # Chem_utils
-    'draw_molecule_with_labels'
-    'canonicalize_smiles',
-
-    # pdf utils
-    'generate_pdf_report',
-
-    # SAS
-    'calculate_sas'
+    'interpret_binding_affinity'
 ]
+
+# Add optional modules only if available
+if _DRAW_AVAILABLE:
+    __all__.append('draw_molecule_with_labels')
+
+__all__.extend([
+    'canonicalize_smiles',  # Always available
+    'calculate_sas',        # Fallback or real
+    'get_swissadmet_data',  # SwissADMET support
+    'parse_swissadmet'
+])
+
+if _PDF_AVAILABLE:
+    __all__.append('generate_pdf_report')
